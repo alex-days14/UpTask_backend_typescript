@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, PopulatedDoc } from "mongoose";
+import mongoose, {Schema, Document, PopulatedDoc, Types} from 'mongoose'
 import Task, { ITask } from "./Task";
 import { IUser } from "./User";
 import Note from "./Note";
@@ -16,9 +16,9 @@ const ProjectSchema: Schema = new Schema({
     projectName : { type: String, required: true, trim: true },
     clientName : { type: String, required: true, trim: true },
     description : { type: String, required: true, trim: true },
-    tasks : [{ type: Schema.Types.ObjectId, ref: 'Task' }],
-    manager: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    team: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    tasks : [{ type: Types.ObjectId, ref: 'Task' }],
+    manager: { type: Types.ObjectId, ref: 'User' },
+    team: [{ type: Types.ObjectId, ref: 'User' }]
 }, { timestamps: true })
 
 /* Middlewares */

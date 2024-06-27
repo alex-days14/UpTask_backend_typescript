@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import Project from "../models/Project";
+import { Types } from "mongoose";
 
 export class ProjectController{
 
@@ -23,7 +24,7 @@ export class ProjectController{
         const project = new Project(req.body)
         const user = req.user;
 
-        project.manager = user._id as string
+        project.manager = user._id as Types.ObjectId
 
         try {
             await project.save()
@@ -39,7 +40,7 @@ export class ProjectController{
                 path: 'tasks', 
                 select: '-completedBy'
             })
-            if(project.manager.toString() !== req.user._id.toString() && !project.team.includes(req.user._id as string)){
+            if(project.manager.toString() !== req.user._id.toString() && !project.team.includes(req.user._id as Types.ObjectId)){
                 this.error.message = 'No cuentas con los permisos necesarios para ver este proyecto'
                 return res.status(401).json({error: this.error.message})
             }
