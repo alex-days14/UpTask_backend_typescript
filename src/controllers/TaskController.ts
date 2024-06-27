@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import Task from "../models/Task";
 import Project from "../models/Project";
+import { Types } from "mongoose";
 
 export class TaskController {
 
@@ -9,8 +10,8 @@ export class TaskController {
     static addTask = async (req: Request, res: Response) => {
         try {
             const task = new Task(req.body)
-            task.project = req.project._id
-            req.project.tasks.push(task._id)
+            task.project = req.project._id as Types.ObjectId
+            req.project.tasks.push(task._id as Types.ObjectId)
             await Promise.allSettled([task.save(), req.project.save()])
             res.status(201).json({message: 'Tarea Creada Correctamente'})
         } catch (error) {
@@ -70,7 +71,7 @@ export class TaskController {
             req.task.status = status
 
             req.task.completedBy.push({
-                user: req.user._id,
+                user: req.user._id as Types.ObjectId,
                 status: status,
                 completedAt: new Date()
             })

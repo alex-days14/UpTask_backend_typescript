@@ -15,10 +15,10 @@ export class NoteController {
         const { content } = req.body;
         const note = new Note()
         note.content = content
-        note.createdBy = req.user._id
-        note.task = req.task._id
+        note.createdBy = req.user._id as Types.ObjectId
+        note.task = req.task._id as Types.ObjectId
 
-        req.task.notes.push(note._id)
+        req.task.notes.push(note._id as Types.ObjectId)
 
         try{
             await Promise.allSettled([note.save(), req.task.save()])
@@ -47,7 +47,7 @@ export class NoteController {
                 this.error.message = "Nota no encontrada"
                 return res.status(404).json({error: this.error.message})
             }
-            if(!req.task.notes.includes(note._id)){
+            if(!req.task.notes.includes(note._id as Types.ObjectId)){
                 this.error.message = "No tienes acceso a esta nota"
                 return res.status(401).json({error: this.error.message})
             }

@@ -6,6 +6,7 @@ import Token from "../models/Token"
 import { AuthEmail } from "../emails/AuthEmail"
 import { generateJWT } from "../utils/jwt"
 import { IProject } from "../models/Project"
+import { Types } from "mongoose"
 
 type AuthControllerBody = {
     current_password: string
@@ -30,7 +31,7 @@ export class AuthController{
             // Generar token de confirmación
             const token = new Token();
             token.token = generateToken();
-            token.user = user._id;
+            token.user = user._id as Types.ObjectId;
 
             //enviar el email
             await AuthEmail.sendConfirmationEmail({
@@ -86,7 +87,7 @@ export class AuthController{
             }
             if(!userExists.confirmed){
                 const token = new Token();
-                token.user = userExists._id;
+                token.user = userExists._id as Types.ObjectId;
                 token.token = generateToken();
                 await token.save();
                 await AuthEmail.sendConfirmationEmail({
@@ -107,7 +108,7 @@ export class AuthController{
             }
 
             const token = generateJWT({
-                id: userExists._id,
+                id: userExists._id as Types.ObjectId,
                 email: userExists.email,
                 name: userExists.name
             });
@@ -137,7 +138,7 @@ export class AuthController{
             // Generar token de confirmación
             const token = new Token();
             token.token = generateToken();
-            token.user = userExists._id;
+            token.user = userExists._id as Types.ObjectId;
 
             //enviar el email
             await AuthEmail.sendConfirmationEmail({
@@ -174,7 +175,7 @@ export class AuthController{
             // Generar token de recuperación
             const token = new Token();
             token.token = generateToken();
-            token.user = userExists._id;
+            token.user = userExists._id as Types.ObjectId;
             await token.save();
 
             //enviar el email

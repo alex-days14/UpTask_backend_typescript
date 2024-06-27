@@ -23,7 +23,7 @@ export class ProjectController{
         const project = new Project(req.body)
         const user = req.user;
 
-        project.manager = user._id
+        project.manager = user._id as string
 
         try {
             await project.save()
@@ -39,7 +39,7 @@ export class ProjectController{
                 path: 'tasks', 
                 select: '-completedBy'
             })
-            if(project.manager.toString() !== req.user._id.toString() && !project.team.includes(req.user._id)){
+            if(project.manager.toString() !== req.user._id.toString() && !project.team.includes(req.user._id as string)){
                 this.error.message = 'No cuentas con los permisos necesarios para ver este proyecto'
                 return res.status(401).json({error: this.error.message})
             }
